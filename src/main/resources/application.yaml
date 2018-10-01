@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 15
+      connection-test-query: SELECT 1
+      driver-class-name: org.postgresql.Driver
+    url: ${datasource_url}
+    username: ${datasource_username}
+    password: ${datasource_password}
+  jooq:
+    sql-dialect: postgres
