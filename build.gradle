@@ -1,7 +1,15 @@
+buildscript {
+    dependencies {
+        classpath 'org.postgresql:postgresql:42.2.2'
+    }
+}
+
 plugins {
     id 'io.spring.dependency-management' version '1.0.6.RELEASE'
     id 'org.springframework.boot' version '2.0.5.RELEASE'
     id 'java'
+    id 'nu.studer.jooq' version '3.0.2'
+    id "org.flywaydb.flyway" version "5.1.4"
 }
 
 group = 'com.elworld'
@@ -20,6 +28,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     compileOnly('org.projectlombok:lombok')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
+    jooqRuntime 'org.postgresql:postgresql:42.2.2'
 }
 
 processResources {
@@ -35,4 +44,63 @@ processResources {
         }
     }
 }
+
+ext {
+    datasource_url = project.hasProperty('datasource_url') ? project.getProperty('datasource_url') : "jdbc:postgresql://postgres:5432/backend?characterEncoding=UTF-8"
+    datasource_username = project.hasProperty('datasource_username') ? project.getProperty('datasource_username') : "backend"
+    datasource_password = project.hasProperty('datasource_password') ? project.getProperty('datasource_password') : "backend"
+    datasource_driver = 'org.postgresql.Driver'
+}
+
+
+def generatedDir = 'src/generated/java'
+
+jooq {
+    elcus(sourceSets.main) {
+        jdbc {
+            driver = "${datasource_driver}"
+            url = "${datasource_url}"
+            user = "${datasource_username}"
+            password = "${datasource_password}"
+        }
+        generator {
+            name = 'org.jooq.codegen.DefaultGenerator'
+            strategy {
+                name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+            }
+            database {
+                name = 'org.jooq.meta.postgres.PostgresDatabase'
+                inputSchema = 'public'
+            }
+            generate {
+                relations = true
+                deprecated = false
+                records = true
+                immutablePojos = false
+                fluentSetters = true
+                daos = false
+                pojos = false
+            }
+            target {
+                packageName = 'com.elworld.propellerhead.db'
+                 directory = generatedDir
+            }
+        }
+    }
+}
+
+flyway {
+    url = "${datasource_url}"
+    user = "${datasource_username}"
+    password = "${datasource_password}"
+    schemas = ['public']
+    locations = ['filesystem:sql/migration']
+}
+
+clean {
+    delete generatedDir
+}
+
+
+generateElcusJooqSchemaSource.dependsOn(flywayMigrate)
 
