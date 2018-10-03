@@ -2,7 +2,9 @@ package com.elworld.propellerhead.services;
 
 import com.elworld.propellerhead.db.enums.CustomerStatus;
 import com.elworld.propellerhead.db.tables.CustomerNote;
+import com.elworld.propellerhead.db.tables.records.CustomerNoteRecord;
 import com.elworld.propellerhead.db.tables.records.CustomerRecord;
+import com.elworld.propellerhead.exceptions.CustomerNotExistsException;
 import com.elworld.propellerhead.models.request.CustomerNoteRequest;
 import com.elworld.propellerhead.models.request.CustomerRequest;
 import com.elworld.propellerhead.models.response.CustomerNotesResponse;
@@ -36,6 +38,17 @@ public class CustomerService {
         return new CustomersResponse(ConvertUtil.convertToCustomerDtos(customers), 0);
     }
 
+    public CustomerResponse updateCustomer(Long customerId, CustomerRequest request) {
+        final CustomerRecord customerRecord = customerRepository.getCustomerById(customerId).orElseThrow(CustomerNotExistsException::new);
+        customerRecord.setEmail(request.getEmail());
+        customerRecord.setName(request.getName());
+        customerRecord.setPhone(request.getPhone());
+        customerRecord.setStatus(request.getStatus());
+        customerRepository.store(customerRecord);
+
+        return new CustomerResponse(ConvertUtil.convertToCustomerDto(customerRecord));
+    }
+
     public CustomerNotesResponse getCustomerNotes(Long customerId, Integer number, Integer count) {
         return null;
     }
@@ -50,9 +63,5 @@ public class CustomerService {
 
     public CustomerNote updateCustomerNote(Long customerId, Long noteId, CustomerNoteRequest request) {
         return null;
-    }
-
-    public CustomerResponse updateCustomer(Long customerId, CustomerRequest request) {
-        return new CustomerResponse(null);
     }
 }

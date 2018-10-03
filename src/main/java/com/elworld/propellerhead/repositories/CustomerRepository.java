@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 import static com.elworld.propellerhead.db.Tables.CUSTOMER;
 
@@ -44,6 +45,10 @@ public class CustomerRepository extends BaseRepository<CustomerRecord, Customer>
                 .offset(number)
                 .limit(count)
                 .fetch();
+    }
+
+    public Optional<CustomerRecord> getCustomerById(Long customerId) {
+        return jooq().selectFrom(CUSTOMER).where(CUSTOMER.ID.eq(customerId)).fetchOptional();
     }
 
     private SortField getSortFieldForCustomers(SortColumn sortColumn, SortDirection direction) {
