@@ -33,6 +33,7 @@ public class ConvertUtil {
 
     public static CustomerNoteDto convertToCustomerNoteDto(CustomerNoteRecord record) {
         CustomerNoteDto dto = new CustomerNoteDto();
+        dto.setCustomerId(record.getCustomerId());
         dto.setId(record.getId());
         dto.setText(record.getText());
         dto.setTitle(record.getTitle());

@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 public class CustomerNoteDto {
 
     private Long id;
+    private Long customerId;
     private String text;
     private String title;
     private LocalDateTime createTimestamp;

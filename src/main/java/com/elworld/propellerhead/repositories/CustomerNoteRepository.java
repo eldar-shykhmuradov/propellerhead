@@ -25,6 +25,7 @@ public class CustomerNoteRepository extends BaseRepository<CustomerNoteRecord, C
 
     public List<CustomerNoteRecord> getCustomerNotes(Long customerId, Integer number, Integer count) {
         return jooq().selectFrom(CUSTOMER_NOTE).where(CUSTOMER_NOTE.CUSTOMER_ID.eq(customerId))
+                .orderBy(CUSTOMER_NOTE.CREATE_TIMESTAMP.desc())
                 .offset(number)
                 .limit(count)
                 .fetch();
