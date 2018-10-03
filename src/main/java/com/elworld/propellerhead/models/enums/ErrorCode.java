@@ -5,7 +5,9 @@ public enum ErrorCode {
 
     INTERNAL_SERVER(1, "Server error. Please, try later"),
     CUSTOMER_NOT_EXIST(2, "Customer does not exist"),
-    NOT_VALID_REQUEST_DATA(3, "Not valid request");
+    NOT_VALID_REQUEST_DATA(3, "Not valid request"),
+    CUSTOMER_NOTE_NOT_EXIST(4, "Customer note does not exist"),
+    INVALID_CUSTOMER_NOTE_ACCESS(5, "Invalid customer note access");
 
 
     private final int errorCode;

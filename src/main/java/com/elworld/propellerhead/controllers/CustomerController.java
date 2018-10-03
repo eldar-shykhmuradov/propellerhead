@@ -38,8 +38,8 @@ public class CustomerController {
 
     @GetMapping("/{id}/notes")
     public ResponseEntity<Object> getCustomerNotes(@PathVariable("id") Long customerId,
-                                                   @RequestParam(value = "number", required = false) Integer number,
-                                                   @RequestParam(value = "count", required = false) Integer count) {
+                                                   @RequestParam(value = "number", defaultValue = "0") Integer number,
+                                                   @RequestParam(value = "count", defaultValue = "10") Integer count) {
         return new ResponseEntity<>(customerService.getCustomerNotes(customerId, number, count), HttpStatus.OK);
     }
 

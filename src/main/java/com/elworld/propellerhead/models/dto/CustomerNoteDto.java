@@ -1,8 +1,11 @@
 package com.elworld.propellerhead.models.dto;
 
 
+import lombok.Data;
+
 import java.time.LocalDateTime;
 
+@Data
 public class CustomerNoteDto {
 
     private Long id;
