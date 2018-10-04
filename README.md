@@ -32,6 +32,8 @@ Database has been created using AWS RDS.
 
 Load balancer: http://elcuspropellerhead-env.nqjep9prut.ap-southeast-2.elasticbeanstalk.com
 
+Try it :  http://elcuspropellerhead-env.nqjep9prut.ap-southeast-2.elasticbeanstalk.com/customers
+
 
 ## Built With
 
